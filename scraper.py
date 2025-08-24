@@ -4,15 +4,6 @@
 # prints a short summary in the terminal
 
 
-# fields to extract
-# fullName
-# position
-# jerseyNumber
-# height/weight
-# birthDate
-# nationality
-# player id or person.id
-
 # functions
 # fetchRoster() - requests the sharks roster JSON and returns a list of player dicts
 # saveJSON(data, filename) and saveCSV(data, filename) - persist data
@@ -23,8 +14,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def main():
-    fetchRoster()
-
+    pass
 
 # fetch and parse the page
 def fetchRoster():
@@ -47,6 +37,18 @@ def parsePlayers(player):
         "birthDate": player.get("birthDate"),
         "nationality": player.get("birthCountry"),
     }
+
+def displaySummary(data):
+    pass
+
+def saveJSON(data, filename):
+    pass
+
+def saveCSV(data, filename):
+    pass
+
+def menu():
+    pass
 
 if __name__ == "__main__":
     main()
