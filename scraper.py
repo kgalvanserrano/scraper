@@ -39,7 +39,7 @@ def fetchRoster():
 def parsePlayers(player):
     return {
         "id": player["id"],
-        "fullName": f"{player['firstName']['default']} {player['lasName']['default']}",
+        "fullName": f"{player['firstName']['default']} {player['lastName']['default']}",
         "position": player.get("positionCode"), # we use get here in case field is optional or missing
         "jerseyNumber": player.get("jerseyNumber"),
         "height": f"{player.get('heightInInches')} in / {player.get('heightInCentimeters')} cm",
@@ -47,3 +47,6 @@ def parsePlayers(player):
         "birthDate": player.get("birthDate"),
         "nationality": player.get("birthCountry"),
     }
+
+if __name__ == "__main__":
+    main()
