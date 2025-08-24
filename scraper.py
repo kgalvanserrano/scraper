@@ -32,5 +32,18 @@ def fetchRoster():
     data = response.json()
 
     roster = data.get("forwards", []) + data.get("defensemen", []) + data.get("goalies", [])
+    parsedRoster = [parsePlayers(player) for player in roster]
 
-    return roster
+    return parsedRoster
+
+def parsePlayers(player):
+    return {
+        "id": player["id"],
+        "fullName": f"{player['firstName']['default']} {player['lasName']['default']}",
+        "position": player.get("positionCode"), # we use get here in case field is optional or missing
+        "jerseyNumber": player.get("jerseyNumber"),
+        "height": f"{player.get('heightInInches')} in / {player.get('heightInCentimeters')} cm",
+        "weight": f"{player.get('weightInPounds')} lbs / {player.get('weightInKilograms')} kg",
+        "birthDate": player.get("birthDate"),
+        "nationality": player.get("birthCountry"),
+    }
