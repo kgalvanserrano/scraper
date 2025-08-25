@@ -11,23 +11,25 @@
 # main() - ties it together and provides short menu | 1) Fetch and save roster 2) View saved roster 3) Exit
 
 import requests
-from bs4 import BeautifulSoup
+import json
+import csv
+import os
 
 def main():
     data = fetchRoster()
-    displaySummary(data)
-    choice = input("What would you like to do?" \
-    " (1) Fetch and save roster (2) View saved roster (3) Exit")
-    if choice == "1":
-        format = input("Would you like to fetch the roster in (1) JSON or (2) CSV?")
-        if format == "1":
-            saveJSON(data, "roster.json")
-        elif format == "2":
-            saveCSV(data, "roster.csv")
-    elif choice == "2":
-        viewSavedRoster(data)
-    elif choice == "3":
-        exit()
+    menu(data)
+    while True:
+        choice = input("What would you like to do? (1) Fetch and save roster (2) View saved roster (3) Exit\n")
+        if choice == "1":
+            format = input("Would you like to fetch the roster in (1) JSON or (2) CSV?\n")
+            if format == "1":
+                saveJSON(data, "roster.json")
+            elif format == "2":
+                saveCSV(data, "roster.csv")
+        elif choice == "2":
+            viewSavedRoster(data)
+        elif choice == "3":
+            exit()
 
 # fetch and parse the page
 def fetchRoster():
@@ -51,7 +53,7 @@ def parsePlayers(player):
         "nationality": player.get("birthCountry"),
     }
 
-def displaySummary(data):
+def menu(data):
     print("Welcome to Kevin's San Jose Sharks Scraper")
     print("Go Sharks!")
     print(f"Found {len(data)} players:")
@@ -64,13 +66,19 @@ def viewSavedRoster(data):
         print(f" - {player['fullName']} ({player['position']})")
 
 def saveJSON(data, filename):
-    pass
+    full_path = os.path.join(os.path.dirname(__file__), filename)
+    with open(full_path, 'w') as f:
+        json.dump(data, f, indent=4)
 
 def saveCSV(data, filename):
-    pass
-
-def menu():
-    pass
+    full_path = os.path.join(os.path.dirname(__file__), filename)
+    with open(full_path, 'w', newline='') as f:
+        # guard against empty data to avoid IndexError
+        fieldnames = data[0].keys() if data else []
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        if data:
+            writer.writerows(data)
 
 if __name__ == "__main__":
     main()
