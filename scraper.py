@@ -14,7 +14,8 @@ import requests
 from bs4 import BeautifulSoup
 
 def main():
-    pass
+    data = fetchRoster()
+    displaySummary(data)
 
 # fetch and parse the page
 def fetchRoster():
@@ -39,7 +40,11 @@ def parsePlayers(player):
     }
 
 def displaySummary(data):
-    pass
+    print("Welcome to Kevin's San Jose Sharks Scraper")
+    print("Go Sharks!")
+    print(f"Found {len(data)} players:")
+    for player in data[:5]:  # show first 5 players
+        print(f" - {player['fullName']} ({player['position']})")
 
 def saveJSON(data, filename):
     pass
